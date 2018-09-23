@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DATABASE_URL:localhost}:5432/film_saver
+    username: film_saver
+    password: film_saver
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  kafka:
+    bootstrap-servers: ${KAFKA_URL:localhost}:9092
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
