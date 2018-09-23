@@ -1,0 +1,3 @@
+[submodule "film-explorer-config"]
+	path = film-explorer-config
+	url = git@github.com:sausageRoll/film-explorer-config.git
