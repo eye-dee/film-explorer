@@ -29,6 +29,16 @@ repositories {
     jcenter()
 }
 
+ext {
+    springCloudVersion = 'Finchley.SR1'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
 docker {
     springBootApplication {
         baseImage = 'openjdk:10-jdk-slim'
@@ -40,6 +50,10 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-cache')
     compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
     compile('org.springframework.boot:spring-boot-starter-webflux')
+
+    compile('org.springframework.cloud:spring-cloud-starter-config')
+    compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+    
     compile('org.springframework.kafka:spring-kafka')
     compileOnly('org.projectlombok:lombok:1.18.2')
     testCompile('org.springframework.boot:spring-boot-starter-test')

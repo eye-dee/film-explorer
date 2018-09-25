@@ -4,9 +4,13 @@ buildscript {
     }
     repositories {
         mavenCentral()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'com.bmuschko:gradle-docker-plugin:3.6.1'
     }
 }
 
@@ -14,6 +18,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.bmuschko.docker-spring-boot-application'
 
 group = 'igor'
 version = '0.0.1-SNAPSHOT'
@@ -21,11 +26,19 @@ sourceCompatibility = 10
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 
 ext {
     springCloudVersion = 'Finchley.SR1'
+}
+
+docker {
+    springBootApplication {
+        baseImage = 'openjdk:10-jdk-slim'
+        tag = 'discovery:latest'
+    }
 }
 
 dependencies {
@@ -35,7 +48,7 @@ dependencies {
     compile 'com.sun.xml.bind:jaxb-impl:2.2.11'
     compile 'com.sun.xml.bind:jaxb-core:2.2.11'
     compile 'javax.xml.bind:jaxb-api:2.2.11'
-    
+
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
