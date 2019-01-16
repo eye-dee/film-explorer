@@ -1,12 +1,13 @@
 buildscript {
     ext {
-        springBootVersion = '2.0.5.RELEASE'
+        springBootVersion = '2.1.2.RELEASE'
     }
     repositories {
         mavenCentral()
         maven {
             url 'https://plugins.gradle.org/m2/'
         }
+        maven { url "https://repo.spring.io/milestone" }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -27,10 +28,11 @@ sourceCompatibility = 10
 repositories {
     mavenCentral()
     jcenter()
+    maven { url "https://repo.spring.io/milestone" }
 }
 
 ext {
-    springCloudVersion = 'Finchley.SR1'
+    springCloudVersion = 'Greenwich.RC2'
 }
 
 dependencyManagement {
@@ -41,7 +43,7 @@ dependencyManagement {
 
 docker {
     springBootApplication {
-        baseImage = 'openjdk:10-jdk-slim'
+        baseImage = 'openjdk:11-jdk-slim'
         tag = 'gateway:latest'
     }
 }

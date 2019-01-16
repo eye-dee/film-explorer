@@ -1,12 +1,13 @@
 buildscript {
     ext {
-        springBootVersion = '2.0.5.RELEASE'
+        springBootVersion = '2.1.2.RELEASE'
     }
     repositories {
         mavenCentral()
         maven {
             url 'https://plugins.gradle.org/m2/'
         }
+        maven { url "https://repo.spring.io/milestone" }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -27,17 +28,22 @@ sourceCompatibility = 10
 repositories {
     mavenCentral()
     jcenter()
+    maven { url "https://repo.spring.io/milestone" }
 }
 
 dependencyManagement {
     imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Finchley.SR1'
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Greenwich.RC2'
     }
+}
+
+configurations {
+    compile.exclude module: "spring-boot-starter-tomcat"
 }
 
 docker {
     springBootApplication {
-        baseImage = 'openjdk:10-jdk-slim'
+        baseImage = 'openjdk:11-jdk-slim'
         tag = 'film-saver:latest'
     }
 }
@@ -45,7 +51,9 @@ docker {
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-cache')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-webflux')
+
     compile('org.apache.kafka:kafka-streams')
     compile('org.flywaydb:flyway-core')
     compile('org.springframework.kafka:spring-kafka')
@@ -53,13 +61,25 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('io.projectreactor:reactor-test')
 
+    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
     compileOnly 'org.projectlombok:lombok:1.18.2'
     compile 'javax.xml.bind:jaxb-api:2.2.11'
     compile 'javax.activation:activation:1.1.1'
     compile 'com.fasterxml.jackson.module:jackson-module-parameter-names'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    
+    compile 'org.javassist:javassist:3.23.1-GA'
+
+    compile 'io.micrometer:micrometer-registry-prometheus'
+    compile 'io.micrometer:micrometer-core'
+    compile group: 'org.springframework.metrics', name: 'spring-metrics', version: '0.5.1.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+
+    compile 'org.elasticsearch.plugin:transport-netty4-client:6.4.1'
+    compile 'org.elasticsearch.client:transport:6.4.1'
+    compile 'org.elasticsearch:elasticsearch:6.4.1'
+    compile group: 'org.springframework.data', name: 'spring-data-elasticsearch', version: '3.1.0.RELEASE'
+
     compile('org.springframework.cloud:spring-cloud-starter-config')
     compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
 }
